@@ -52,11 +52,11 @@ class CreateRelease():
                 else:
                     version = self.release
         else:
-            if self.release == 'initial':  # pylint disable=R1705
+            if self.release == 'initial':
                 print("--release are 'initial' but this is not the initial "
                       "release.")
                 return
-            elif self.release not in RELEASETYPES:
+            elif self.release not in RELEASETYPES:  # pylint disable=R1705
                 version = self.release
             else:
                 if 'v' in prev_tag:
