@@ -1,5 +1,6 @@
 """Default values."""
 BODY = "## Changes\n\n"
+CHANGELOG = "[changelog]: https://github.com/{}/compare/{}...{})"
 FOOTER = """
 ***
 

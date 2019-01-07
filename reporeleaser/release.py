@@ -1,7 +1,8 @@
 """Create a new release for your repo."""
 from github import Github
 from github.GithubException import UnknownObjectException
-from reporeleaser.const import BODY, FOOTER, SEPERATOR, RELEASETYPES, VERSION
+from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
+                                RELEASETYPES, VERSION)
 
 
 class CreateRelease():
@@ -67,16 +68,21 @@ class CreateRelease():
                     version = VERSION.format(major, minor, patch)
                 if 'v' in prev_tag:
                     version = 'v' + version
-        for commit in list(repo.get_commits()):
-            if not first_release:
-                if commit.sha == prev_tag_sha:
-                    break
-            message = repo.get_git_commit(commit.sha).message.split('\n')[0]
-            body = body + '- ' + message + '\n'
-
-        body = body + FOOTER
         if version == '0.0.1' or version == 'v0.0.1':
             body = ':tada: Initial release of this repo :tada:'
+            body = body + FOOTER
+        else:
+            for commit in list(repo.get_commits()):
+                if not first_release:
+                    if commit.sha == prev_tag_sha:
+                        break
+                message = repo.get_git_commit(commit.sha).message
+                message = message.split('\n')[0]
+                body = body + '- ' + message + '\n'
+            body = body + "[Full Changelog][changelog]\n"
+            body = body + FOOTER
+            changelog = CHANGELOG.format(self.repo, prev_tag, version)
+            body = body + changelog
         if not self.test:
             try:
                 repo.create_git_tag_and_release(version,
