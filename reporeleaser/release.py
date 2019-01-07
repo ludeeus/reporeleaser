@@ -68,8 +68,8 @@ class CreateRelease():
                     version = VERSION.format(major, minor, patch)
                 if 'v' in prev_tag:
                     version = 'v' + version
-        if version == '0.0.1' or version == 'v0.0.1':
-            body = ':tada: Initial release of this repo :tada:'
+        if version == ('0.0.1', 'v0.0.1'):
+            body = ':tada: Initial release of this repo :tada:\n'
             body = body + FOOTER
         else:
             for commit in list(repo.get_commits()):
@@ -98,8 +98,9 @@ class CreateRelease():
                 print("Something went horrible wrong :(")
                 print(error)
         else:
-            print("Version", version)
-            print("Body:")
+            print("Tag name:", version)
+            print("Release title:", version)
+            print("Release description:")
             print(SEPERATOR)
             print(body)
             print("Test mode was active skipping release.")
