@@ -2,7 +2,7 @@
 from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
-                                RELEASETYPES, VERSION)
+                                RELEASETYPES, RELEASEURL, VERSION)
 
 
 class CreateRelease():
@@ -98,6 +98,8 @@ class CreateRelease():
                                                 body,
                                                 last_commit,
                                                 '')
+                print("The release was published.")
+                print(RELEASEURL.format(self.repo, version))
             except UnknownObjectException:
                 message = "You do not have premissions to push to {}"
                 print(message.format(self.repo))

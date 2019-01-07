@@ -10,4 +10,5 @@ This release was created with [reporeleaser][reporeleaser] :tada:
 """
 SEPERATOR = "----------------------------------------------------"
 RELEASETYPES = ['major', 'minor', 'patch']
+RELEASEURL = "https://github.com/{}/releases/tag/{}"
 VERSION = "{}.{}.{}"
