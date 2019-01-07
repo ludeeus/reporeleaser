@@ -32,11 +32,10 @@ class CreateRelease():
             for tag in tags:
                 prev_tag = tag.name
                 prev_tag_sha = tag.commit.sha
-                if not 'untagged' in prev_tag:
+                if 'untagged' not in prev_tag:
                     break
         else:
             first_release = True
-
 
         if first_release:
             if self.release_type not in RELEASETYPES:
@@ -76,7 +75,6 @@ class CreateRelease():
             body = body + '- ' + repo.get_git_commit(commit.sha).message + '\n'
 
         body = body + FOOTER
-
 
         if not self.test:
             try:

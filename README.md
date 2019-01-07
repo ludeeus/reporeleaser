@@ -13,16 +13,10 @@ python3 -m pip install -U reporeleaser
 ### Example
 
 ```bash
-reporeleaser --token aaabbbccc111222333 --mode component
+reporeleaser --token aaabbbccc111222333 --repo ludeeus/customjson --release_type patch
 ```
 
-```bash
-reporeleaser --token aaabbbccc111222333 --mode component --repo sensor.trakt
-```
-
-```bash
-reporeleaser --token aaabbbccc111222333 --mode component --repo sensor.trakt --repo sensor.brewdog
-```
+**NB!: it is recommended to run it one time with `--test` to make sure the data is correct.**
 
 #### CLI options
 
