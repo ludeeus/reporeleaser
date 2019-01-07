@@ -1,6 +1,4 @@
 """Create a new release for your repo."""
-import re
-from datetime import datetime
 from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
@@ -17,115 +15,168 @@ class CreateRelease():
         self.release = release
         self.test = test
         self.github = Github(token)
+        self.repo_obj = None
+        self.first_release = False
 
     def create_release(self):
         """Create a new release for your repo."""
         if not self.release:
-            print('--release was not defined, activating test mode.')
-            self.test = True
-        first_release = False
+            print('--release was not defined')
+            return
+
+        self.repository()
+
+        self.repo_object()
+        if self.repo_obj is None:
+            return
+
+        last_commit = self.last_commit()
+        if last_commit is None:
+            return
+
+        last_release = self.last_release()
+        if not last_release:
+            return
+
+        if not last_release['tags']:
+            if self.release not in RELEASETYPES:
+                new_version = self.release
+        else:
+            new_version = self.new_version(last_release)
+
+        if new_version is None:
+            return
+
+        description = self.release_description(last_release, new_version)
+
+        if not self.test:
+            self.publish(new_version, description, last_commit)
+        else:
+            print("Tag name:", new_version)
+            print("Release title:", new_version)
+            print("Release description:")
+            print(SEPERATOR)
+            print(description)
+            print("Test mode was active skipping release.")
+
+    def repository(self):
+        """Set correct repository name."""
+        if '/' not in self.repo:
+            user = self.github.get_user().name
+            self.repo = "{}/{}".format(user, self.repo)
+
+    def repo_object(self):
+        """Set repo object."""
         try:
-            repo = self.github.get_repo(self.repo)
+            self.repo_obj = self.github.get_repo(self.repo)
         except UnknownObjectException:
             message = "Repository {} not found."
             print(message.format(self.repo))
-            return
-        tags = list(repo.get_tags())
-        last_commit = repo.get_branch(repo.default_branch)
-        last_commit = last_commit.commit.sha
-        prev_tag = None
-        prev_tag_sha = None
-        body = BODY
-        if tags:
-            for tag in tags:
-                prev_tag = tag.name
-                reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
-                if re.match(reg, prev_tag):
-                    prev_tag_sha = tag.commit.sha
-                    break
-            if prev_tag_sha is None:
-                if self.release in RELEASETYPES:
-                    message = "Could not find a previous tag matching "
-                    message = message + "vX.X.X or X.X.X"
-                    print(message)
-                    return
-        else:
-            first_release = True
-            version = '0.0.1'
 
-        if first_release:
-            if self.release not in RELEASETYPES:
-                if self.release == 'initial':
-                    version = '0.0.1'
-                else:
-                    version = self.release
+    def last_commit(self):
+        """Get last commit."""
+        last_commit = None
+        last_commit = self.repo_obj.get_branch(self.repo_obj.default_branch)
+        last_commit = last_commit.commit.sha
+        return last_commit
+
+    def new_version(self, last_release):
+        """Return new version."""
+        if self.release not in RELEASETYPES:
+            version = self.release
         else:
-            if self.release == 'initial':
-                print("--release are 'initial' but this is not the initial "
-                      "release.")
-                return
-            elif self.release not in RELEASETYPES:
-                version = self.release
+            if 'v' in last_release['tag_name']:
+                current_version = last_release['tag_name'].split('v')[1]
+                current_version = current_version.split('.')
             else:
-                if 'v' in prev_tag:
-                    curr_version = prev_tag.split('v')[1].split('.')
-                else:
-                    curr_version = prev_tag.split('.')
-                if self.release == 'major':
-                    major = int(curr_version[0]) + 1
-                    minor = curr_version[1]
-                    patch = curr_version[2]
-                    version = VERSION.format(major, minor, patch)
-                elif self.release == 'minor':
-                    major = curr_version[0]
-                    minor = int(curr_version[1]) + 1
-                    patch = curr_version[2]
-                    version = VERSION.format(major, minor, patch)
-                elif self.release == 'patch':
-                    major = curr_version[0]
-                    minor = curr_version[1]
-                    patch = int(curr_version[2]) + 1
-                    version = VERSION.format(major, minor, patch)
-                if 'v' in prev_tag:
-                    version = 'v' + version
-        if version in ('0.0.1', 'v0.0.1') or self.release == 'initial':
-            body = ':tada: Initial release of this repo :tada:\n'
-            body = body + FOOTER
+                current_version = last_release['tag_name'].split('.')
+            if self.release == 'major':
+                major = int(current_version[0]) + 1
+                minor = current_version[1]
+                patch = current_version[2]
+                version = VERSION.format(major, minor, patch)
+            elif self.release == 'minor':
+                major = current_version[0]
+                minor = int(current_version[1]) + 1
+                patch = current_version[2]
+                version = VERSION.format(major, minor, patch)
+            elif self.release == 'patch':
+                major = current_version[0]
+                minor = current_version[1]
+                patch = int(current_version[2]) + 1
+                version = VERSION.format(major, minor, patch)
+            if 'v' in last_release['tag_name']:
+                version = 'v' + version
+        return version
+
+    def last_release(self):
+        """Return last release."""
+        import re
+        data = {}
+        tags = list(self.repo_obj.get_tags())
+        if tags:
+            data['tags'] = True
+            for tag in tags:
+                tag_name = tag.name
+                reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
+                if re.match(reg, tag_name):
+                    tag_sha = tag.commit.sha
+                    break
+            if tag_sha is None:
+                if self.release in RELEASETYPES:
+                    tag_name = None
+                    tag_sha = None
+                    message = "Could not find a previous tag matching "
+                    message += "vX.X.X or X.X.X"
+                    print(message)
         else:
-            dateformat = "%a, %d %b %Y %H:%M:%S GMT"
-            release_commit = repo.get_commit(prev_tag_sha)
-            since = datetime.strptime(release_commit.last_modified, dateformat)
-            for commit in reversed(list(repo.get_commits(since=since))):
-                if commit.sha == prev_tag_sha:
+            data['tags'] = False
+            tag_name = '0.0.1'
+        data['tag_name'] = tag_name
+        data['tag_sha'] = tag_sha
+        return data
+
+    def new_commits(self, sha):
+        """Get new commits."""
+        from datetime import datetime
+        dateformat = "%a, %d %b %Y %H:%M:%S GMT"
+        release_commit = self.repo_obj.get_commit(sha)
+        since = datetime.strptime(release_commit.last_modified, dateformat)
+        new_commits = reversed(list(self.repo_obj.get_commits(since=since)))
+        return new_commits
+
+    def release_description(self, last_release, version):
+        """Create release description."""
+        if self.release == 'initial':
+            description = ':tada: Initial release of this repo :tada:\n'
+            description += FOOTER
+        else:
+            description = BODY
+            for commit in self.new_commits(last_release['tag_sha']):
+                if commit.sha == last_release['tag_sha']:
                     pass
                 else:
-                    message = repo.get_git_commit(commit.sha).message
+                    message = self.repo_obj.get_git_commit(commit.sha).message
                     message = message.split('\n')[0]
-                    body = body + '- ' + message + '\n'
-            body = body + "\n[Full Changelog][changelog]\n"
-            body = body + FOOTER
-            changelog = CHANGELOG.format(self.repo, prev_tag, version)
-            body = body + changelog
-        if not self.test:
-            try:
-                repo.create_git_tag_and_release(version,
-                                                '',
-                                                version,
-                                                body,
-                                                last_commit,
-                                                '')
-                print("The release was published.")
-                print(RELEASEURL.format(self.repo, version))
-            except UnknownObjectException:
-                message = "You do not have premissions to push to {}"
-                print(message.format(self.repo))
-            except Exception as error:  # pylint: disable=W0703
-                print("Something went horrible wrong :(")
-                print(error)
-        else:
-            print("Tag name:", version)
-            print("Release title:", version)
-            print("Release description:")
-            print(SEPERATOR)
-            print(body)
-            print("Test mode was active skipping release.")
+                    description += '- ' + message + '\n'
+            description += "\n[Full Changelog][changelog]\n"
+            description += FOOTER
+            changelog = CHANGELOG.format(self.repo, last_release['tag_name'],
+                                         version)
+            description += changelog
+        return description
+
+    def publish(self, new_version, description, last_commit):
+        """Publish the release."""
+        try:
+            self.repo_obj.create_git_tag_and_release(new_version, '',
+                                                     new_version, description,
+                                                     last_commit, '')
+            print("The release was published.")
+            print(RELEASEURL.format(self.repo, new_version))
+        except UnknownObjectException:
+            message = "You do not have premissions to push to {}"
+            print(message.format(self.repo))
+        except Exception as error:  # pylint: disable=W0703
+            print("Something went horrible wrong :(")
+            print(error)

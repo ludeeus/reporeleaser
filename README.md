@@ -58,7 +58,7 @@ param | alias | description
 -- | -- | --
 `--token` | `-T` | An GitHub `access_token` with `repo` permissions.
 `--repo` | `-R` | The repo you want to show info for, can be added multiple times, is optional.
-`--release` | `None` | Can be `major`, `minor`, `patch`, `initial` or a custom tag name.
+`--release` | `None` | Can be `major`, `minor`, `patch`, or a custom tag name.
 `--test` | `None` | This will print to console, and not create the release.
 `--version` | `-V` | Print the installed version.
 
