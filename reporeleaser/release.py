@@ -92,13 +92,13 @@ class CreateRelease():
                 current_version = last_release['tag_name'].split('.')
             if self.release == 'major':
                 major = int(current_version[0]) + 1
-                minor = current_version[1]
-                patch = current_version[2]
+                minor = 0
+                patch = 0
                 version = VERSION.format(major, minor, patch)
             elif self.release == 'minor':
                 major = current_version[0]
                 minor = int(current_version[1]) + 1
-                patch = current_version[2]
+                patch = 0
                 version = VERSION.format(major, minor, patch)
             elif self.release == 'patch':
                 major = current_version[0]
