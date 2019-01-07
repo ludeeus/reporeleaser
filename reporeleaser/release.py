@@ -87,12 +87,13 @@ class CreateRelease():
             dateformat = "%a, %d %b %Y %H:%M:%S GMT"
             release_commit = repo.get_commit(prev_tag_sha)
             since = datetime.strptime(release_commit.last_modified, dateformat)
-            for commit in list(repo.get_commits(since=since)):
+            for commit in list(repo.get_commits(since=since)).reverse():
                 if commit.sha == prev_tag_sha:
                     pass
-                message = repo.get_git_commit(commit.sha).message
-                message = message.split('\n')[0]
-                body = body + '- ' + message + '\n'
+                else:
+                    message = repo.get_git_commit(commit.sha).message
+                    message = message.split('\n')[0]
+                    body = body + '- ' + message + '\n'
             body = body + "\n[Full Changelog][changelog]\n"
             body = body + FOOTER
             changelog = CHANGELOG.format(self.repo, prev_tag, version)
