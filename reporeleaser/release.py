@@ -79,7 +79,7 @@ class CreateRelease():
                 message = repo.get_git_commit(commit.sha).message
                 message = message.split('\n')[0]
                 body = body + '- ' + message + '\n'
-            body = body + "[Full Changelog][changelog]\n"
+            body = body + "\n[Full Changelog][changelog]\n"
             body = body + FOOTER
             changelog = CHANGELOG.format(self.repo, prev_tag, version)
             body = body + changelog
