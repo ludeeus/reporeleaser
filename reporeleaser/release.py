@@ -46,7 +46,11 @@ class CreateRelease():
                 else:
                     version = self.release
         else:
-            if self.release not in RELEASETYPES:
+            if self.release == 'initial':
+                print("--release are 'initial' but this is not the initial "
+                      "release, activating test mode.")
+                self.test = True
+            elif self.release not in RELEASETYPES:
                 version = self.release
             else:
                 if 'v' in prev_tag:
