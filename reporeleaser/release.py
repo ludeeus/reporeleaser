@@ -50,6 +50,7 @@ class CreateRelease():
                 print("--release are 'initial' but this is not the initial "
                       "release, activating test mode.")
                 self.test = True
+                version = '0.0.1'
             elif self.release not in RELEASETYPES:
                 version = self.release
             else:
