@@ -40,9 +40,10 @@ class CreateRelease():
 
         if first_release:
             if self.release_type not in RELEASETYPES:
-                version = self.release_type
-            else:
-                version = '0.0.1'
+                if self.release_type == 'initial':
+                    version = '0.0.1'
+                else:
+                    version = self.release_type
         else:
             if self.release_type not in RELEASETYPES:
                 version = self.release_type
@@ -68,7 +69,7 @@ class CreateRelease():
                     version = VERSION.format(major, minor, patch)
                 if 'v' in prev_tag:
                     version = 'v' + version
-        if version == ('0.0.1', 'v0.0.1'):
+        if version in ('0.0.1', 'v0.0.1') or self.release_type == 'initial':
             body = ':tada: Initial release of this repo :tada:\n'
             body = body + FOOTER
         else:
