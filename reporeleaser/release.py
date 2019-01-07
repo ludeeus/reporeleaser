@@ -29,9 +29,9 @@ class CreateRelease():
             message = "Repository {} not found."
             print(message.format(self.repo))
             return
-        commits = list(repo.get_commits())
         tags = list(repo.get_tags())
-        last_commit = commits[0].sha
+        last_commit = repo.get_branch(repo.default_branch)
+        last_commit = last_commit.commit.sha
         prev_tag = None
         prev_tag_sha = None
         body = BODY
