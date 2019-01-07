@@ -22,7 +22,12 @@ class CreateRelease():
             print('--release was not defined, activating test mode.')
             self.test = True
         first_release = False
-        repo = self.github.get_repo(self.repo)
+        try:
+            repo = self.github.get_repo(self.repo)
+        except UnknownObjectException:
+            message = "Repository {} not found."
+            print(message.format(self.repo))
+            return
         commits = list(repo.get_commits())
         tags = list(repo.get_tags())
         last_commit = commits[0].sha
@@ -48,9 +53,8 @@ class CreateRelease():
         else:
             if self.release == 'initial':
                 print("--release are 'initial' but this is not the initial "
-                      "release, activating test mode.")
-                self.test = True
-                version = '0.0.1'
+                      "release.")
+                return
             elif self.release not in RELEASETYPES:
                 version = self.release
             else:
