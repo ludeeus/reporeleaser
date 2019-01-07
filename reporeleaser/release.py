@@ -112,6 +112,7 @@ class CreateRelease():
     def last_release(self):
         """Return last release."""
         import re
+        tag_sha = None
         data = {}
         tags = list(self.repo_obj.get_tags())
         if tags:
@@ -125,7 +126,6 @@ class CreateRelease():
             if tag_sha is None:
                 if self.release in RELEASETYPES:
                     tag_name = None
-                    tag_sha = None
                     message = "Could not find a previous tag matching "
                     message += "vX.X.X or X.X.X"
                     print(message)
