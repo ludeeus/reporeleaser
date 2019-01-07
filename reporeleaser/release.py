@@ -17,6 +17,9 @@ class CreateRelease():
 
     def release(self):
         """Create a new release for your repo."""
+        if not self.release_type:
+            print('--release_type was not defined, activating test mode.')
+            self.test = True
         first_release = False
         repo = self.github.get_repo(self.repo)
         commits = list(repo.get_commits())
@@ -94,4 +97,4 @@ class CreateRelease():
             print("Body:")
             print(SEPERATOR)
             print(body)
-            print("Test was enabled, skipping release")
+            print("Test mode was active skipping release.")
