@@ -1,4 +1,5 @@
 """Create a new release for your repo."""
+import re
 from datetime import datetime
 from github import Github
 from github.GithubException import UnknownObjectException
@@ -38,9 +39,17 @@ class CreateRelease():
         if tags:
             for tag in tags:
                 prev_tag = tag.name
-                prev_tag_sha = tag.commit.sha
-                if 'untagged' not in prev_tag:
+                reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
+                if re.match(reg, prev_tag):
+                    prev_tag_sha = tag.commit.sha
                     break
+            if prev_tag_sha is None:
+                if self.release not in RELEASETYPES:
+                    if self.release != 'initial':
+                        message = "Could not find a previous tag matching "
+                        message = message + "vX.X.X or X.X.X"
+                        print(message)
+                        return
         else:
             first_release = True
             version = '0.0.1'
