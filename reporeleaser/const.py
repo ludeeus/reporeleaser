@@ -1,7 +1,6 @@
 """Default values."""
 BODY = "## Changes\n\n"
 FOOTER = """
-
 ***
 
 This release was created with [reporeleaser][reporeleaser] :tada:
