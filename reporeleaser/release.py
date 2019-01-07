@@ -62,7 +62,7 @@ class CreateRelease():
     def repository(self):
         """Set correct repository name."""
         if '/' not in self.repo:
-            user = self.github.get_user().name
+            user = self.github.get_user().username
             self.repo = "{}/{}".format(user, self.repo)
 
     def repo_object(self):
