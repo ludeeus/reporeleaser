@@ -1,4 +1,4 @@
-"""Create a new release for your repo"""
+"""Create a new release for your repo."""
 from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import BODY, FOOTER, SEPERATOR, RELEASETYPES, VERSION
@@ -71,11 +71,12 @@ class CreateRelease():
             if not first_release:
                 if commit.sha == prev_tag_sha:
                     break
-
-            body = body + '- ' + repo.get_git_commit(commit.sha).message + '\n'
+            message = repo.get_git_commit(commit.sha).message.split('\n')[0]
+            body = body + '- ' + message + '\n'
 
         body = body + FOOTER
-
+        if version == '0.0.1' or version == 'v0.0.1':
+            body = ':tada: Initial release of this repo :tada:'
         if not self.test:
             try:
                 repo.create_git_tag_and_release(version,

@@ -2,6 +2,9 @@
 
 _Create a new release for your repo._  
 
+This will create a new release for your repo.  
+In the description of that release it will list all commits since the last release.
+
 ## Install
 
 **Require Python version 3.5.3+**
