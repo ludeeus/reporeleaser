@@ -51,7 +51,7 @@ class CreateRelease():
                 else:
                     version = self.release
         else:
-            if self.release == 'initial':
+            if self.release == 'initial':  # pylint disable=R1705
                 print("--release are 'initial' but this is not the initial "
                       "release.")
                 return
