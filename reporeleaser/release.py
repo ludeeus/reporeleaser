@@ -52,19 +52,19 @@ class CreateRelease():
                 else:
                     curr_version = prev_tag.split('.')
                 if self.release_type == 'major':
-                    major = curr_version[0] + 1
+                    major = int(curr_version[0]) + 1
                     minor = curr_version[1]
                     patch = curr_version[2]
                     version = VERSION.format(major, minor, patch)
                 elif self.release_type == 'minor':
                     major = curr_version[0]
-                    minor = curr_version[1] + 1
+                    minor = int(curr_version[1]) + 1
                     patch = curr_version[2]
                     version = VERSION.format(major, minor, patch)
                 elif self.release_type == 'patch':
                     major = curr_version[0]
                     minor = curr_version[1]
-                    patch = curr_version[2] + 1
+                    patch = int(curr_version[2]) + 1
                     version = VERSION.format(major, minor, patch)
                 if 'v' in prev_tag:
                     version = 'v' + version
