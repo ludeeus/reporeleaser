@@ -1,4 +1,5 @@
 """Create a new release for your repo."""
+from datetime import datetime
 from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
@@ -83,10 +84,12 @@ class CreateRelease():
             body = ':tada: Initial release of this repo :tada:\n'
             body = body + FOOTER
         else:
-            for commit in list(repo.get_commits()):
-                if not first_release:
-                    if commit.sha == prev_tag_sha:
-                        break
+            dateformat = "%a, %d %b %Y %H:%M:%S GMT"
+            release_commit = repo.get_commit(prev_tag_sha)
+            since = datetime.strptime(release_commit.last_modified, dateformat)
+            for commit in list(repo.get_commits(since=since)):
+                if commit.sha == prev_tag_sha:
+                    pass
                 message = repo.get_git_commit(commit.sha).message
                 message = message.split('\n')[0]
                 body = body + '- ' + message + '\n'
