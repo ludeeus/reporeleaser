@@ -8,18 +8,18 @@ from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release_type, test):
+    def __init__(self, token, repo, release, test):
         """Initilalize."""
         self.token = token
         self.repo = repo
-        self.release_type = release_type
+        self.release = release
         self.test = test
         self.github = Github(token)
 
-    def release(self):
+    def create_release(self):
         """Create a new release for your repo."""
-        if not self.release_type:
-            print('--release_type was not defined, activating test mode.')
+        if not self.release:
+            print('--release was not defined, activating test mode.')
             self.test = True
         first_release = False
         repo = self.github.get_repo(self.repo)
@@ -39,37 +39,37 @@ class CreateRelease():
             first_release = True
 
         if first_release:
-            if self.release_type not in RELEASETYPES:
-                if self.release_type == 'initial':
+            if self.release not in RELEASETYPES:
+                if self.release == 'initial':
                     version = '0.0.1'
                 else:
-                    version = self.release_type
+                    version = self.release
         else:
-            if self.release_type not in RELEASETYPES:
-                version = self.release_type
+            if self.release not in RELEASETYPES:
+                version = self.release
             else:
                 if 'v' in prev_tag:
                     curr_version = prev_tag.split('v')[1].split('.')
                 else:
                     curr_version = prev_tag.split('.')
-                if self.release_type == 'major':
+                if self.release == 'major':
                     major = int(curr_version[0]) + 1
                     minor = curr_version[1]
                     patch = curr_version[2]
                     version = VERSION.format(major, minor, patch)
-                elif self.release_type == 'minor':
+                elif self.release == 'minor':
                     major = curr_version[0]
                     minor = int(curr_version[1]) + 1
                     patch = curr_version[2]
                     version = VERSION.format(major, minor, patch)
-                elif self.release_type == 'patch':
+                elif self.release == 'patch':
                     major = curr_version[0]
                     minor = curr_version[1]
                     patch = int(curr_version[2]) + 1
                     version = VERSION.format(major, minor, patch)
                 if 'v' in prev_tag:
                     version = 'v' + version
-        if version in ('0.0.1', 'v0.0.1') or self.release_type == 'initial':
+        if version in ('0.0.1', 'v0.0.1') or self.release == 'initial':
             body = ':tada: Initial release of this repo :tada:\n'
             body = body + FOOTER
         else:

@@ -16,7 +16,7 @@ python3 -m pip install -U reporeleaser
 ### Example
 
 ```bash
-reporeleaser --token aaabbbccc111222333 --repo ludeeus/customjson --release_type patch
+reporeleaser --token aaabbbccc111222333 --repo ludeeus/customjson --release patch
 ```
 
 **NB!: it is recommended to run it one time with `--test` to make sure the data is correct.**
@@ -27,7 +27,7 @@ param | alias | description
 -- | -- | --
 `--token` | `-T` | An GitHub `access_token` with `repo` permissions.
 `--repo` | `-R` | The repo you want to show info for, can be added multiple times, is optional.
-`--release_type` | `None` | Can be `major`, `minor`, `patch`, `initial` or a custom tag name.
+`--release` | `None` | Can be `major`, `minor`, `patch`, `initial` or a custom tag name.
 `--test` | `None` | This will print to console, and not create the release.
 `--version` | `-V` | Print the installed version.
 
