@@ -37,6 +37,7 @@ class CreateRelease():
                     break
         else:
             first_release = True
+            version = '0.0.1'
 
         if first_release:
             if self.release not in RELEASETYPES:
