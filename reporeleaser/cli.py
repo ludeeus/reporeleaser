@@ -4,7 +4,7 @@ import click
 
 @click.command()
 @click.option('--token', '-T', default=None, help='GitHub access_token.')
-@click.option('--repo', '-R', default=None, multiple=True, help='Repo.')
+@click.option('--repo', '-R', default=None, help='Repo.')
 @click.option('--release_type', help='Release type.')
 @click.option('--test', '-P', is_flag=True, help="Test run.")
 @click.option('--version', '-V', is_flag=True, help='Print version.')
