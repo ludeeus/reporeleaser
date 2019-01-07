@@ -44,12 +44,11 @@ class CreateRelease():
                     prev_tag_sha = tag.commit.sha
                     break
             if prev_tag_sha is None:
-                if self.release not in RELEASETYPES:
-                    if self.release != 'initial':
-                        message = "Could not find a previous tag matching "
-                        message = message + "vX.X.X or X.X.X"
-                        print(message)
-                        return
+                if self.release in RELEASETYPES:
+                    message = "Could not find a previous tag matching "
+                    message = message + "vX.X.X or X.X.X"
+                    print(message)
+                    return
         else:
             first_release = True
             version = '0.0.1'
