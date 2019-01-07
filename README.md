@@ -16,29 +16,32 @@ python3 -m pip install -U reporeleaser
 ### Example
 
 ```bash
-reporeleaser --token aaabbbccc111222333 --repo ludeeus/customjson --release patch
+reporeleaser --token aaabbbccc111222333 --repo reporeleaser --release minor
 ```
 
 This example will create a new release for `` with this information:
 
 #### Tag name
 
-Current version + 1 for patch, example `1.1.4`
+Current version + 1 for minor, example `0.1.0`
 
 #### Release name
 
-Current version + 1 for patch, example `1.1.4`
+Current version + 1 for minor, example `0.1.0`
 
 #### Release description
 
 ```markdown
 ## Changes
 
-- Add cmd option --version
-- lint
-- Reorder stuff for version handling
-- Fix customjson_update_pending
-- Adds customjson_update_pending
+- Use regex to find previous tag
+- Fix error handing for missing regex match
+- Split code into multiple methods
+- Create default tag_sha for last_release
+- Add failsafe for new_commits
+- use username and not name
+- Use login not username
+- correct versioning for major / minor
 
 [Full Changelog][changelog]
 
@@ -47,7 +50,7 @@ Current version + 1 for patch, example `1.1.4`
 This release was created with [reporeleaser][reporeleaser] :tada:
 
 [reporeleaser]: https://pypi.org/project/reporeleaser/
-[changelog]: https://github.com/ludeeus/customjson/compare/1.1.3...1.1.4
+[changelog]: https://github.com/ludeeus/reporeleaser/compare/0.0.4...0.1.0
 ```
 
 **NB!: it is recommended to run it one time with `--test` to make sure the data is correct.**
@@ -57,7 +60,7 @@ This release was created with [reporeleaser][reporeleaser] :tada:
 param | alias | description
 -- | -- | --
 `--token` | `-T` | An GitHub `access_token` with `repo` permissions.
-`--repo` | `-R` | The repo you want to show info for, can be added multiple times, is optional.
+`--repo` | `-R` | The repo you are creating a release for, format should be `repo` if it's your's or `user/repo`
 `--release` | `None` | Can be `major`, `minor`, `patch`, or a custom tag name.
 `--test` | `None` | This will print to console, and not create the release.
 `--version` | `-V` | Print the installed version.
