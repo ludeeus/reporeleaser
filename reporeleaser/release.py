@@ -230,7 +230,10 @@ class CreateRelease():
                 print(DRAFT_CREATED)
             else:
                 print(RELEASE_PUBLISHED)
-            print(RELEASEURL.format(self.repo, new_version))
+            if self.pre_release:
+                print(RELEASEURL.format(self.repo, '', ''))
+            else:
+                print(RELEASEURL.format(self.repo, '/tag/', new_version))
         except UnknownObjectException:
             print(PERMISSION_ERROR.format(self.repo))
         except Exception as error:  # pylint: disable=W0703
