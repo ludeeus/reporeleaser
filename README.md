@@ -61,20 +61,28 @@ param | alias | description
 -- | -- | --
 `--token` | `-T` | An GitHub `access_token` with `repo` permissions.
 `--repo` | `-R` | The repo you are creating a release for, format should be `repo` if it's your's or `user/repo`
-`--release` | `None` | Can be `major`, `minor`, `patch`, or a custom tag name.
+`--release` | `None` | Can be `major`, `minor`, `patch`, `beta` or a custom tag name.
 `--test` | `None` | This will print to console, and not create the release.
 `--version` | `-V` | Print the installed version.
 
 
-You can **only** use `major`, `minor`, `patch` if your tags are one of these:
+You can **only** use `major`, `minor`, `patch`, `beta` if your tags are one of these:
 
+- MAJOR.MINOR
 - MAJOR.MINOR.PATCH
+- MAJOR.MINOR.PATCHbBETA
 - vMAJOR.MINOR.PATCH
+- vMAJOR.MINOR.PATCH
+- vMAJOR.MINOR.PATCHbBETA
 
 examples:
 
-- 1.1.3
-- v1.1.3
+- 1.1
+- 1.1.0
+- 1.1.0b1
+- v1.1
+- v1.1.0
+- v1.1.0b1
 
 ***
 

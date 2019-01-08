@@ -2,7 +2,7 @@
 from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
-                                RELEASETYPES, RELEASEURL, VERSION)
+                                RELEASETYPES, RELEASEURL)
 
 
 class CreateRelease():
@@ -82,6 +82,11 @@ class CreateRelease():
 
     def new_version(self, last_release):
         """Return new version."""
+        major = 0
+        minor = 0
+        patch = 0
+        beta = 0
+
         if self.release not in RELEASETYPES:
             version = self.release
         else:
@@ -90,21 +95,28 @@ class CreateRelease():
                 current_version = current_version.split('.')
             else:
                 current_version = last_release['tag_name'].split('.')
+            segments = len(current_version)
+
             if self.release == 'major':
                 major = int(current_version[0]) + 1
-                minor = 0
-                patch = 0
-                version = VERSION.format(major, minor, patch)
             elif self.release == 'minor':
-                major = current_version[0]
                 minor = int(current_version[1]) + 1
-                patch = 0
-                version = VERSION.format(major, minor, patch)
             elif self.release == 'patch':
-                major = current_version[0]
-                minor = current_version[1]
                 patch = int(current_version[2]) + 1
-                version = VERSION.format(major, minor, patch)
+            elif self.release == 'beta':
+                splitindex = segments - 1
+                if 'b' in current_version[splitindex]:
+                    betasplit = current_version[splitindex].split('b')
+                    beta = int(betasplit[0]) + 1
+                    patch = betasplit[0] + 'b' + beta
+                else:
+                    patch = "{}b{}".format(0, 0)
+
+            if segments == 2:
+                version = "{}.{}".format(major, minor)
+            elif segments == 3:
+                version = "{}.{}.{}".format(major, minor, patch)
+
             if 'v' in last_release['tag_name']:
                 version = 'v' + version
         return version
@@ -119,7 +131,7 @@ class CreateRelease():
             data['tags'] = True
             for tag in tags:
                 tag_name = tag.name
-                reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)$"
+                reg = "(v|^)?(\\d+\\.)?(\\d+\\.)?(\\*|\\d+|\\d+b+\\d)$"
                 if re.match(reg, tag_name):
                     tag_sha = tag.commit.sha
                     break
@@ -127,7 +139,7 @@ class CreateRelease():
                 if self.release in RELEASETYPES:
                     tag_name = None
                     message = "Could not find a previous tag matching "
-                    message += "vX.X.X or X.X.X"
+                    message += "(v)X.X(.X)(bX)"
                     print(message)
         else:
             data['tags'] = False
