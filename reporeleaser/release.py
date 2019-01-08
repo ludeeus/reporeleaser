@@ -162,14 +162,14 @@ class CreateRelease():
     def new_commits(self, sha):
         """Get new commits."""
         if sha is None:
-            commits = reversed(list(self.repo_obj.get_commits()))
+            commits = self.repo_obj.get_commits()
         else:
             from datetime import datetime
             dateformat = "%a, %d %b %Y %H:%M:%S GMT"
             release_commit = self.repo_obj.get_commit(sha)
             since = datetime.strptime(release_commit.last_modified, dateformat)
-            commits = list(self.repo_obj.get_commits(since=since))
-        return commits
+            commits = self.repo_obj.get_commits(since=since)
+        return list(commits)
 
     def release_description(self, last_release, version):
         """Create release description."""
