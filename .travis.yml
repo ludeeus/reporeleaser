@@ -46,7 +46,7 @@ jobs:
     - stage: deploy
       name: "Deploy to PyPi"
       install: pip install -U pip setuptools wheel
-      script: sed -i "s/VERSION/$TRAVIS_TAG/" reporeleaser/version.py && cd reporeleaser && ls && cat version.py
+      script: sed -i "s/VERSION/$TRAVIS_TAG/" reporeleaser/version.py && ls && cat reporeleaser/version.py
       deploy: &pypi
         provider: pypi
         user: "$PYPIUSER"
