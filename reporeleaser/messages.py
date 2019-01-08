@@ -72,8 +72,6 @@ Info: https://github.com/ludeeus/reporeleaser#option---release
 
 """
 ## Todo
-- Add messages here
-- Use these messages
 - Add PR# to commit if PR (is this possible?) are it allready there?
 
 """

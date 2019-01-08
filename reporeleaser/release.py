@@ -4,12 +4,7 @@ from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, RELEASETYPES,
                                 RELEASEURL)
 #import reporeleaser.messages as messages
-from reporeleaser.messages import (RELEASE_MISSING, NO_PREVIOUS_RELEASE,
-                                   TEST_MODE, REPOSITORY_NOT_FOUND,
-                                   SEGMENT_PATCH_MISSING, DRAFT_CREATED,
-                                   RELEASE_PUBLISHED, PERMISSION_ERROR,
-                                   GENERIC_ERROR, NO_NEW_COMMITS,
-                                   NO_MATCHING_TAG)
+from reporeleaser.messages import *  # pylint disable=W0401
 
 class CreateRelease():
     """Class for release creation."""
