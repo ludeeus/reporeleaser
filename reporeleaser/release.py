@@ -1,9 +1,15 @@
 """Create a new release for your repo."""
 from github import Github
 from github.GithubException import UnknownObjectException
-from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
-                                RELEASETYPES, RELEASEURL)
-
+from reporeleaser.const import (BODY, CHANGELOG, FOOTER, RELEASETYPES,
+                                RELEASEURL)
+#import reporeleaser.messages as messages
+from reporeleaser.messages import (RELEASE_MISSING, NO_PREVIOUS_RELEASE,
+                                   TEST_MODE, REPOSITORY_NOT_FOUND,
+                                   SEGMENT_PATCH_MISSING, DRAFT_CREATED,
+                                   RELEASE_PUBLISHED, PERMISSION_ERROR,
+                                   GENERIC_ERROR, NO_NEW_COMMITS,
+                                   NO_MATCHING_TAG)
 
 class CreateRelease():
     """Class for release creation."""
@@ -27,7 +33,7 @@ class CreateRelease():
     def create_release(self):
         """Create a new release for your repo."""
         if not self.release:
-            print('--release was not defined')
+            print(RELEASE_MISSING)
             return
 
         self.repository()
@@ -49,7 +55,7 @@ class CreateRelease():
                 new_version = self.release
             else:
                 new_version = None
-                print("No previous tags found, please use a custom release")
+                print(NO_PREVIOUS_RELEASE)
         else:
             new_version = self.new_version(last_release)
 
@@ -69,13 +75,8 @@ class CreateRelease():
         if not self.test:
             self.publish(title, new_version, description, last_commit)
         else:
-            print("Draft:", self.draft)
-            print("Tag name:", new_version)
-            print("Release title:", title)
-            print("Release description:")
-            print(SEPERATOR)
-            print(description)
-            print("Test mode was active skipping release.")
+            print(TEST_MODE.format(draft=self.draft, tag=new_version,
+                                   title=title, description=description))
 
     def repository(self):
         """Set correct repository name."""
@@ -88,8 +89,7 @@ class CreateRelease():
         try:
             self.repo_obj = self.github.get_repo(self.repo)
         except UnknownObjectException:
-            message = "Repository {} not found."
-            print(message.format(self.repo))
+            print(REPOSITORY_NOT_FOUND.format(self.repo))
 
     def last_commit(self):
         """Get last commit."""
@@ -122,9 +122,13 @@ class CreateRelease():
                 minor = int(current_version[1]) + 1
 
             elif self.release == 'patch':
-                major = current_version[0]
-                minor = current_version[1]
-                patch = int(current_version[2]) + 1
+                if segments == 3:
+                    major = current_version[0]
+                    minor = current_version[1]
+                    patch = int(current_version[2]) + 1
+                else:
+                    version = None
+                    print(SEGMENT_PATCH_MISSING)
 
             if segments == 2:
                 version = "{}.{}".format(major, minor)
@@ -152,9 +156,7 @@ class CreateRelease():
             if tag_sha is None:
                 if self.release in RELEASETYPES:
                     tag_name = None
-                    message = "Could not find a previous tag matching "
-                    message += "(v)X.X(.X)"
-                    print(message)
+                    print(NO_MATCHING_TAG)
         else:
             data['tags'] = False
             tag_name = '0.0.1'
@@ -183,7 +185,7 @@ class CreateRelease():
             description = BODY
             commits = self.new_commits(last_release['tag_sha'])
             if len(commits) - 1 == 0:
-                print("There is no new commits to release.")
+                print(NO_NEW_COMMITS)
                 return None
             for commit in reversed(commits):
                 if commit.sha == last_release['tag_sha']:
@@ -218,13 +220,11 @@ class CreateRelease():
                                                      last_commit, '',
                                                      draft=self.draft)
             if self.draft:
-                print("The release draft was created.")
+                print(DRAFT_CREATED)
             else:
-                print("The release was published.")
+                print(RELEASE_PUBLISHED)
             print(RELEASEURL.format(self.repo, new_version))
         except UnknownObjectException:
-            message = "You do not have premissions to push to {}"
-            print(message.format(self.repo))
+            print(PERMISSION_ERROR.format(self.repo))
         except Exception as error:  # pylint: disable=W0703
-            print("Something went horrible wrong :(")
-            print(error)
+            print(GENERIC_ERROR.format(error))
