@@ -42,6 +42,7 @@ Info: https://github.com/ludeeus/reporeleaser#option---release
 
 TEST_MODE = """
 Draft:         {draft}
+Pre release:   {pre_release}
 Tag name:      {tag}
 Release title: {title}
 Release description:

@@ -76,8 +76,10 @@ class CreateRelease():
         if not self.test:
             self.publish(title, new_version, description, last_commit)
         else:
-            print(TEST_MODE.format(draft=self.draft, tag=new_version,
-                                   title=title, description=description))
+            print(TEST_MODE.format(draft=self.draft,
+                                   pre_release=self.pre_release,
+                                   tag=new_version, title=title,
+                                   description=description))
 
     def repository(self):
         """Set correct repository name."""
