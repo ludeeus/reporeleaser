@@ -19,7 +19,7 @@ python3 -m pip install -U reporeleaser
 reporeleaser --token aaabbbccc111222333 --repo reporeleaser --release minor
 ```
 
-This example will create a new release for `` with this information:
+This example will create a new release for `reporeleaser` with this information:
 
 #### Tag name
 
