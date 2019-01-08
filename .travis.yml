@@ -1,7 +1,7 @@
 language: python
 stages:
-  - linting
-  - install
+#  - linting
+#  - install
   - deploy
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
     - stage: deploy
       name: "Deploy to PyPi"
       install: pip install -U pip setuptools wheel
-      script: sed -i "s/VERSION/$TRAVIS_TAG/" reporeleaser/version.py
+      script: cat reporeleaser/version.py && sed -i "s/VERSION/$TRAVIS_TAG/" reporeleaser/version.py && cat reporeleaser/version.py 
       deploy: &pypi
         provider: pypi
         user: "$PYPIUSER"
