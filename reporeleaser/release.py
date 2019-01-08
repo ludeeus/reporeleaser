@@ -9,7 +9,7 @@ class CreateRelease():
     """Class for release creation."""
 
     def __init__(self, token, repo, release, test, draft, show_sha,
-                 hide_footer):
+                 hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
         self.repo = repo
@@ -18,6 +18,7 @@ class CreateRelease():
         self.draft = draft
         self.show_sha = show_sha
         self.hide_footer = hide_footer
+        self.hide_full_changelog = hide_full_changelog
         self.github = Github(token)
         self.repo_obj = None
         self.first_release = False
@@ -179,11 +180,13 @@ class CreateRelease():
                     else:
                         line = "- {}\n".format(message)
                     description += line
-            description += "\n[Full Changelog][changelog]\n\n"
+            if not self.hide_full_changelog:
+                description += "\n[Full Changelog][changelog]\n\n"
             if not self.hide_footer:
                 description += FOOTER
-            changelog = CHANGELOG.format(self.repo, last_release['tag_name'],
-                                         version)
+            if not self.hide_full_changelog:
+                changelog = CHANGELOG.format(self.repo,
+                                             last_release['tag_name'], version)
             description += changelog
         return description
 

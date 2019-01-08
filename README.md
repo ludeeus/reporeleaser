@@ -66,6 +66,7 @@ param | alias | description
 `--draft` | `-D` | Creates a release draft.
 `--show_sha` | `None` | Show sha in the description lines. [Example with this not set](https://github.com/ludeeus/reporeleaser/releases/tag/0.3.0)
 `--hide_footer` | `None` | Hide the "footer" from the description.
+`--hide_full_changelog` | `None` | Hide the "Full changelog" link from the description.
 `--version` | `-V` | Print the installed version.
 
 

@@ -12,8 +12,11 @@ import click
               help="Show sha in description lines.")
 @click.option('--hide_footer', is_flag=True,
               help="Hide footer from description.")
+@click.option('--hide_full_changelog', is_flag=True,
+              help="Hide Full changelog link from description.")
 @click.option('--version', '-V', is_flag=True, help='Print version.')
-def cli(token, repo, release, test, draft, show_sha, hide_footer, version):
+def cli(token, repo, release, test, draft, show_sha, hide_footer,
+        hide_full_changelog, version):
     """CLI for this package."""
     if version:
         from reporeleaser.version import __version__
@@ -21,7 +24,8 @@ def cli(token, repo, release, test, draft, show_sha, hide_footer, version):
     else:
         from reporeleaser.release import CreateRelease
         create_release = CreateRelease(token, repo, release, test, draft,
-                                       show_sha, hide_footer)
+                                       show_sha, hide_footer,
+                                       hide_full_changelog)
         create_release.create_release()
 
 
