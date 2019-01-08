@@ -54,6 +54,9 @@ class CreateRelease():
 
         description = self.release_description(last_release, new_version)
 
+        if description is None:
+            return
+
         if not self.test:
             self.publish(new_version, description, last_commit)
         else:
@@ -169,7 +172,11 @@ class CreateRelease():
             description += FOOTER
         else:
             description = BODY
-            for commit in self.new_commits(last_release['tag_sha']):
+            commits = self.new_commits(last_release['tag_sha'])
+            if len(commits) -1 == 0:
+                print("There is no new commits to release.")
+                return None
+            for commit in commits:
                 if commit.sha == last_release['tag_sha']:
                     pass
                 else:
