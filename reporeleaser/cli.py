@@ -19,7 +19,7 @@ def cli(token, repo, release, test, show_sha, hide_footer, version):
         print(__version__)
     else:
         from reporeleaser.release import CreateRelease
-        create_release = CreateRelease(token, repo, release, test, show_sha
+        create_release = CreateRelease(token, repo, release, test, show_sha,
                                        hide_footer)
         create_release.create_release()
 
