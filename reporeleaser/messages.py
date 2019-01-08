@@ -70,9 +70,3 @@ Try using `--release minor` instead,
 
 Info: https://github.com/ludeeus/reporeleaser#option---release
 """
-
-"""
-## Todo
-- Add PR# to commit if PR (is this possible?) are it allready there?
-
-"""
