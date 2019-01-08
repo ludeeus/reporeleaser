@@ -129,6 +129,7 @@ class CreateRelease():
                 else:
                     version = None
                     print(SEGMENT_PATCH_MISSING)
+                    return version
 
             if segments == 2:
                 version = "{}.{}".format(major, minor)
