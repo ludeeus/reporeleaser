@@ -8,12 +8,14 @@ from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release, test, show_sha, hide_footer):
+    def __init__(self, token, repo, release, test, draft, show_sha,
+                 hide_footer):
         """Initilalize."""
         self.token = token
         self.repo = repo
         self.release = release
         self.test = test
+        self.draft = draft
         self.show_sha = show_sha
         self.hide_footer = hide_footer
         self.github = Github(token)
@@ -54,6 +56,7 @@ class CreateRelease():
         if not self.test:
             self.publish(new_version, description, last_commit)
         else:
+            print("Draft:", self.draft)
             print("Tag name:", new_version)
             print("Release title:", new_version)
             print("Release description:")
@@ -189,7 +192,8 @@ class CreateRelease():
         try:
             self.repo_obj.create_git_tag_and_release(new_version, '',
                                                      new_version, description,
-                                                     last_commit, '')
+                                                     last_commit, '',
+                                                     draft=self.draft)
             print("The release was published.")
             print(RELEASEURL.format(self.repo, new_version))
         except UnknownObjectException:

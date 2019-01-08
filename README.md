@@ -63,6 +63,7 @@ param | alias | description
 `--repo` | `-R` | The repo you are creating a release for, format should be `repo` if it's your's or `user/repo`
 `--release` | `None` | Can be `major`, `minor`, `patch` or a custom tag name.
 `--test` | `None` | This will print to console, and not create the release.
+`--draft` | `-D` | Creates a release draft.
 `--show_sha` | `None` | Show sha in the description lines. [Example with this not set](https://github.com/ludeeus/reporeleaser/releases/tag/0.3.0)
 `--hide_footer` | `None` | Hide the "footer" from the description.
 `--version` | `-V` | Print the installed version.

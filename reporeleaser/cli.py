@@ -7,20 +7,21 @@ import click
 @click.option('--repo', '-R', default=None, help='Repo.')
 @click.option('--release', help='Release type.')
 @click.option('--test', '-P', is_flag=True, help="Test run.")
+@click.option('--draft', '-D', is_flag=True, help="Creates release draft.")
 @click.option('--show_sha', is_flag=True,
               help="Show sha in description lines.")
 @click.option('--hide_footer', is_flag=True,
               help="Hide footer from description.")
 @click.option('--version', '-V', is_flag=True, help='Print version.')
-def cli(token, repo, release, test, show_sha, hide_footer, version):
+def cli(token, repo, release, test, draft,  show_sha, hide_footer, version):
     """CLI for this package."""
     if version:
         from reporeleaser.version import __version__
         print(__version__)
     else:
         from reporeleaser.release import CreateRelease
-        create_release = CreateRelease(token, repo, release, test, show_sha,
-                                       hide_footer)
+        create_release = CreateRelease(token, repo, release, test, draft,
+                                       show_sha, hide_footer)
         create_release.create_release()
 
 
