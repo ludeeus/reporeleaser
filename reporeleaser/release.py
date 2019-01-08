@@ -228,11 +228,9 @@ class CreateRelease():
                                                      prerelease=pre_release)
             if self.draft:
                 print(DRAFT_CREATED)
-            else:
-                print(RELEASE_PUBLISHED)
-            if self.pre_release:
                 print(RELEASEURL.format(self.repo, '', ''))
             else:
+                print(RELEASE_PUBLISHED)
                 print(RELEASEURL.format(self.repo, '/tag/', new_version))
         except UnknownObjectException:
             print(PERMISSION_ERROR.format(self.repo))
