@@ -63,7 +63,7 @@ This release was created with [reporeleaser][reporeleaser] :tada:
 ## option `--token`
 
 A personal access token for your GitHub account.  
-This token **needs** access to all `repo` scopes.
+This token **needs** at least access to the `repo\public_repo` scope.
 
 You can create a new token in the [Developer settings](https://github.com/settings/tokens/new).
 
