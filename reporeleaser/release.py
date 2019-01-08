@@ -182,6 +182,8 @@ class CreateRelease():
                     description += line
             if not self.hide_full_changelog:
                 description += "\n[Full Changelog][changelog]\n\n"
+            else:
+                description += "\n"
             if not self.hide_footer:
                 description += FOOTER
             if not self.hide_full_changelog:
