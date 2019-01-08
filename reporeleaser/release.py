@@ -201,7 +201,10 @@ class CreateRelease():
                                                      new_version, description,
                                                      last_commit, '',
                                                      draft=self.draft)
-            print("The release was published.")
+            if self.draft:
+                print("The release draft was created.")
+            else:
+                print("The release was published.")
             print(RELEASEURL.format(self.repo, new_version))
         except UnknownObjectException:
             message = "You do not have premissions to push to {}"
