@@ -3,14 +3,19 @@ from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, RELEASETYPES,
                                 RELEASEURL)
-from reporeleaser.messages import *  # pylint disable=W0401
+from reporeleaser.messages import (RELEASE_MISSING, NO_PREVIOUS_RELEASE,
+                                   TEST_MODE, REPOSITORY_NOT_FOUND,
+                                   SEGMENT_PATCH_MISSING, DRAFT_CREATED,
+                                   RELEASE_PUBLISHED, PERMISSION_ERROR,
+                                   GENERIC_ERROR, NO_NEW_COMMITS,
+                                   NO_MATCHING_TAG)
 
 
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release, test, title, draft, show_sha,
-                 hide_footer, hide_full_changelog):
+    def __init__(self, token, repo, release, test, title, draft, pre_release,
+                 show_sha, hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
         self.repo = repo
@@ -18,6 +23,7 @@ class CreateRelease():
         self.test = test
         self.title = title
         self.draft = draft
+        self.pre_release = pre_release
         self.show_sha = show_sha
         self.hide_footer = hide_footer
         self.hide_full_changelog = hide_full_changelog
@@ -212,10 +218,12 @@ class CreateRelease():
     def publish(self, title, new_version, description, last_commit):
         """Publish the release."""
         try:
+            pre_release = self.pre_release
             self.repo_obj.create_git_tag_and_release(new_version, '',
                                                      title, description,
                                                      last_commit, '',
-                                                     draft=self.draft)
+                                                     draft=self.draft,
+                                                     prerelease=pre_release)
             if self.draft:
                 print(DRAFT_CREATED)
             else:
