@@ -60,7 +60,7 @@ You can create a new token in the [Developer settings](https://github.com/settin
 
 ![accesstoken](images/accesstoken.png)
 
-_You should have 1 token pr integration you use._
+_You should have 1 access token pr integration you use._
 
 **Example:** `--token aaabbbccc111222333`
 
