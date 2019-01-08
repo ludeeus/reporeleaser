@@ -114,11 +114,11 @@ _This option is a flag._
 
 This creates a release draft instead of publishing the release, this can be useful if you need to add more/change the text in the release description.
 
-## option `--pre_release`
+## option `--prerelease`
 
 _This option is a flag._
 
-This creates a release pre_release instead of publishing the release.
+This creates a release pre-release instead of publishing the release.
 
 ## option `--show_sha`
 

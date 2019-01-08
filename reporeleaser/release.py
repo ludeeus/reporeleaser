@@ -14,7 +14,7 @@ from reporeleaser.messages import (RELEASE_MISSING, NO_PREVIOUS_RELEASE,
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release, test, title, draft, pre_release,
+    def __init__(self, token, repo, release, test, title, draft, prerelease,
                  show_sha, hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
@@ -23,7 +23,7 @@ class CreateRelease():
         self.test = test
         self.title = title
         self.draft = draft
-        self.pre_release = pre_release
+        self.prerelease = prerelease
         self.show_sha = show_sha
         self.hide_footer = hide_footer
         self.hide_full_changelog = hide_full_changelog
@@ -77,7 +77,7 @@ class CreateRelease():
             self.publish(title, new_version, description, last_commit)
         else:
             print(TEST_MODE.format(draft=self.draft,
-                                   pre_release=self.pre_release,
+                                   prerelease=self.prerelease,
                                    tag=new_version, title=title,
                                    description=description))
 
@@ -220,12 +220,12 @@ class CreateRelease():
     def publish(self, title, new_version, description, last_commit):
         """Publish the release."""
         try:
-            pre_release = self.pre_release
+            prerelease = self.prerelease
             self.repo_obj.create_git_tag_and_release(new_version, '',
                                                      title, description,
                                                      last_commit, '',
                                                      draft=self.draft,
-                                                     prerelease=pre_release)
+                                                     prerelease=prerelease)
             if self.draft:
                 print(DRAFT_CREATED)
                 print(RELEASEURL.format(self.repo, '', ''))
