@@ -47,6 +47,9 @@ class CreateRelease():
         if not last_release['tags']:
             if self.release not in RELEASETYPES:
                 new_version = self.release
+            else:
+                new_version = None
+                print("No previous tags found, please use a custom release")
         else:
             new_version = self.new_version(last_release)
 
