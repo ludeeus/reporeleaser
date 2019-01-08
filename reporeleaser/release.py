@@ -8,13 +8,14 @@ from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release, test, draft, show_sha,
+    def __init__(self, token, repo, release, test, title, draft, show_sha,
                  hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
         self.repo = repo
         self.release = release
         self.test = test
+        self.title = title
         self.draft = draft
         self.show_sha = show_sha
         self.hide_footer = hide_footer
@@ -57,12 +58,17 @@ class CreateRelease():
         if description is None:
             return
 
+        if self.title is not None:
+            title = self.title
+        else:
+            title = new_version
+
         if not self.test:
-            self.publish(new_version, description, last_commit)
+            self.publish(title, new_version, description, last_commit)
         else:
             print("Draft:", self.draft)
             print("Tag name:", new_version)
-            print("Release title:", new_version)
+            print("Release title:", title)
             print("Release description:")
             print(SEPERATOR)
             print(description)
@@ -201,11 +207,11 @@ class CreateRelease():
                     description += changelog
         return description
 
-    def publish(self, new_version, description, last_commit):
+    def publish(self, title, new_version, description, last_commit):
         """Publish the release."""
         try:
             self.repo_obj.create_git_tag_and_release(new_version, '',
-                                                     new_version, description,
+                                                     title, description,
                                                      last_commit, '',
                                                      draft=self.draft)
             if self.draft:
