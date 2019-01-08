@@ -3,8 +3,8 @@ from github import Github
 from github.GithubException import UnknownObjectException
 from reporeleaser.const import (BODY, CHANGELOG, FOOTER, RELEASETYPES,
                                 RELEASEURL)
-#import reporeleaser.messages as messages
 from reporeleaser.messages import *  # pylint disable=W0401
+
 
 class CreateRelease():
     """Class for release creation."""
