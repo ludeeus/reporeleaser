@@ -108,7 +108,7 @@ class CreateRelease():
                 if 'b' in current_version[splitindex]:
                     betasplit = current_version[splitindex].split('b')
                     beta = int(betasplit[0]) + 1
-                    patch = betasplit[0] + 'b' + beta
+                    patch = str(betasplit[0]) + 'b' + str(beta)
                 else:
                     patch = "{}b{}".format(0, 0)
 
