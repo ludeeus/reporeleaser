@@ -63,6 +63,8 @@ Info: https://github.com/ludeeus/reporeleaser#option---repo
 SEGMENT_PATCH_MISSING = """
 You used `--release patch`, but the previous tag had not this segment.
 
+Previous tag '{}'
+
 Try using `--release minor` instead,
 
 Info: https://github.com/ludeeus/reporeleaser#option---release

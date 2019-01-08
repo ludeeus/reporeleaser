@@ -128,7 +128,8 @@ class CreateRelease():
                     patch = int(current_version[2]) + 1
                 else:
                     version = None
-                    print(SEGMENT_PATCH_MISSING)
+                    previous_tag = last_release['tag_name']
+                    print(SEGMENT_PATCH_MISSING.format(previous_tag))
                     return version
 
             if segments == 2:
