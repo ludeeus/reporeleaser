@@ -162,7 +162,7 @@ class CreateRelease():
             dateformat = "%a, %d %b %Y %H:%M:%S GMT"
             release_commit = self.repo_obj.get_commit(sha)
             since = datetime.strptime(release_commit.last_modified, dateformat)
-            commits = reversed(list(self.repo_obj.get_commits(since=since)))
+            commits = list(self.repo_obj.get_commits(since=since))
         return commits
 
     def release_description(self, last_release, version):
@@ -176,7 +176,7 @@ class CreateRelease():
             if len(commits) -1 == 0:
                 print("There is no new commits to release.")
                 return None
-            for commit in commits:
+            for commit in reversed(commits):
                 if commit.sha == last_release['tag_sha']:
                     pass
                 else:
