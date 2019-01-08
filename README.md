@@ -2,9 +2,9 @@
 
 <!-- badges start -->
 
-[![Build Status][travisbadge]][travisbadge]
+[![Build Status][travisbadge]][travislink]
 [![PyPI version][pypibadge]][pypilink]
-![Maintained]
+[![Maintained][Maintained]](#)
 [![BuyMeCoffee][buymecoffeebadge]][buymecoffeelink]
 
 <!-- badges end -->
