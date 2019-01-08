@@ -179,7 +179,7 @@ class CreateRelease():
                     else:
                         line = "- {}\n".format(message)
                     description += line
-            description += "\n[Full Changelog][changelog]\n"
+            description += "\n[Full Changelog][changelog]\n\n"
             if not self.hide_footer:
                 description += FOOTER
             changelog = CHANGELOG.format(self.repo, last_release['tag_name'],

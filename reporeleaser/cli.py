@@ -13,7 +13,7 @@ import click
 @click.option('--hide_footer', is_flag=True,
               help="Hide footer from description.")
 @click.option('--version', '-V', is_flag=True, help='Print version.')
-def cli(token, repo, release, test, draft,  show_sha, hide_footer, version):
+def cli(token, repo, release, test, draft, show_sha, hide_footer, version):
     """CLI for this package."""
     if version:
         from reporeleaser.version import __version__

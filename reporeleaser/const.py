@@ -1,8 +1,7 @@
 """Default values."""
 BODY = "## Changes\n\n"
 CHANGELOG = "[changelog]: https://github.com/{}/compare/{}...{}"
-FOOTER = """
-***
+FOOTER = """***
 
 This release was created with [reporeleaser][reporeleaser] :tada:
 
