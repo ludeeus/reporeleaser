@@ -39,7 +39,7 @@ class CreateRelease():
             return
 
         last_release = self.last_release()
-        if not last_release:
+        if last_release['tag_name'] is None:
             return
 
         if not last_release['tags']:
