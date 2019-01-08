@@ -179,7 +179,7 @@ class CreateRelease():
         else:
             description = BODY
             commits = self.new_commits(last_release['tag_sha'])
-            if len(commits) -1 == 0:
+            if len(commits) - 1 == 0:
                 print("There is no new commits to release.")
                 return None
             for commit in reversed(commits):
