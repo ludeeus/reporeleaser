@@ -47,7 +47,7 @@ This release was created with [reporeleaser][reporeleaser] :tada:
 [changelog]: https://github.com/ludeeus/reporeleaser/compare/0.0.4...0.1.0
 ```
 
-**NB!: it is recommended to run it one time with `--test` option to make sure the data is correct.**
+**NB!: it is recommended to run it one time with [`--test`](#option---test) option to make sure the data is correct.**
 
 # CLI options
 
