@@ -39,7 +39,7 @@ jobs:
       name: "Setup test"
       python: "3.6"
       script:
-        - sed -i "s/VERSION/$TRAVIS_TAG/" setup.py
+        - sed -i "s/VERSION/$TRAVIS_TAG/" reporeleaser/version.py
         - cat setup.py
         - python setup.py install
         - python -c"from reporeleaser.release import CreateRelease"
