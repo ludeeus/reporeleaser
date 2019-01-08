@@ -175,7 +175,7 @@ class CreateRelease():
                     message = self.repo_obj.get_git_commit(commit.sha).message
                     message = message.split('\n')[0]
                     if self.show_sha:
-                        line = "- {} {} \n".format(commit.sha, message)
+                        line = "- {} {} \n".format(commit.sha[0:7], message)
                     else:
                         line = "- {}\n".format(message)
                     description += line
