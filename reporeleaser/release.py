@@ -8,13 +8,14 @@ from reporeleaser.const import (BODY, CHANGELOG, FOOTER, SEPERATOR,
 class CreateRelease():
     """Class for release creation."""
 
-    def __init__(self, token, repo, release, test, hide_sha):
+    def __init__(self, token, repo, release, test, show_sha, hide_footer):
         """Initilalize."""
         self.token = token
         self.repo = repo
         self.release = release
         self.test = test
-        self.hide_sha = hide_sha
+        self.show_sha = show_sha
+        self.hide_footer = hide_footer
         self.github = Github(token)
         self.repo_obj = None
         self.first_release = False
@@ -170,13 +171,14 @@ class CreateRelease():
                 else:
                     message = self.repo_obj.get_git_commit(commit.sha).message
                     message = message.split('\n')[0]
-                    if self.hide_sha:
-                        line = "- {}\n".format(message)
-                    else:
+                    if self.show_sha:
                         line = "- {} {} \n".format(commit.sha, message)
+                    else:
+                        line = "- {}\n".format(message)
                     description += line
             description += "\n[Full Changelog][changelog]\n"
-            description += FOOTER
+            if not self.hide_footer:
+                description += FOOTER
             changelog = CHANGELOG.format(self.repo, last_release['tag_name'],
                                          version)
             description += changelog
