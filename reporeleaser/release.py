@@ -191,7 +191,7 @@ class CreateRelease():
                     changelog = CHANGELOG.format(self.repo,
                                                  last_release['tag_name'],
                                                  version)
-                description += changelog
+                    description += changelog
         return description
 
     def publish(self, new_version, description, last_commit):
