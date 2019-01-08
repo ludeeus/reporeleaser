@@ -181,14 +181,16 @@ class CreateRelease():
                         line = "- {}\n".format(message)
                     description += line
             if not self.hide_full_changelog:
-                description += "\n[Full Changelog][changelog]\n\n"
-            else:
-                description += "\n"
+                if last_release['tag_sha'] is not None:
+                    description += "\n[Full Changelog][changelog]\n"
+            description += "\n"
             if not self.hide_footer:
                 description += FOOTER
             if not self.hide_full_changelog:
-                changelog = CHANGELOG.format(self.repo,
-                                             last_release['tag_name'], version)
+                if last_release['tag_sha'] is not None:
+                    changelog = CHANGELOG.format(self.repo,
+                                                 last_release['tag_name'],
+                                                 version)
                 description += changelog
         return description
 
