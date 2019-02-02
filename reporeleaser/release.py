@@ -15,7 +15,7 @@ class CreateRelease():
     """Class for release creation."""
 
     def __init__(self, token, repo, release, test, title, draft, prerelease,
-                 show_sha, hide_footer, hide_full_changelog):
+                 show_sha, show_author, hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
         self.repo = repo
@@ -25,6 +25,7 @@ class CreateRelease():
         self.draft = draft
         self.prerelease = prerelease
         self.show_sha = show_sha
+        self.show_author = show_author
         self.hide_footer = hide_footer
         self.hide_full_changelog = hide_full_changelog
         self.github = Github(token)
@@ -198,10 +199,13 @@ class CreateRelease():
                 else:
                     message = self.repo_obj.get_git_commit(commit.sha).message
                     message = message.split('\n')[0]
+                    line = '- '
                     if self.show_sha:
-                        line = "- {} {} \n".format(commit.sha[0:7], message)
-                    else:
-                        line = "- {}\n".format(message)
+                        line += "{} ".format(commit.sha[0:7])
+                    line += "{} ".format(message)
+                    if self.show_author:
+                        line += "@{} ".format(commit.author.login)
+                    line += '\n'
                     description += line
             if not self.hide_full_changelog:
                 if last_release['tag_sha'] is not None:
