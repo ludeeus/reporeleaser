@@ -199,6 +199,8 @@ class CreateRelease():
                 else:
                     message = self.repo_obj.get_git_commit(commit.sha).message
                     message = message.split('\n')[0]
+                    if 'Merge pull request #' in message:
+                        continue
                     line = '- '
                     if self.show_sha:
                         line += "{} ".format(commit.sha[0:7])
