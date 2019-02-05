@@ -206,7 +206,8 @@ class CreateRelease():
                         line += "{} ".format(commit.sha[0:7])
                     line += "{} ".format(message)
                     if self.show_author:
-                        line += "@{} ".format(commit.author.login)
+                        if self.github.get_user().login != commit.author.login:
+                            line += "@{} ".format(commit.author.login)
                     line += '\n'
                     description += line
             if not self.hide_full_changelog:
