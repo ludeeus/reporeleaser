@@ -134,7 +134,7 @@ The name you want to use for your release, this defaults to the tag name.
 
 _If your name contains spaces you **need** to add quotes around it._
 
-**Example:** `--title "My Release Title`
+**Example:** `--title "My Release Title"`
 
 ## option `--hide_footer`
 
