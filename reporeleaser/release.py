@@ -1,8 +1,9 @@
 """Create a new release for your repo."""
 from github import Github
 from github.GithubException import UnknownObjectException
-from reporeleaser.const import (BODY, CHANGELOG, FOOTER, RELEASETYPES,
-                                RELEASEURL)
+from reporeleaser.const import (BODY, CHANGELOG, FOOTER,
+                                GITLAB_CI_BADGE, GITLAB_CI_BADGE_LINKS,
+                                RELEASETYPES, RELEASEURL)
 from reporeleaser.messages import (RELEASE_MISSING, NO_PREVIOUS_RELEASE,
                                    TEST_MODE, REPOSITORY_NOT_FOUND,
                                    SEGMENT_PATCH_MISSING, DRAFT_CREATED,
@@ -15,7 +16,8 @@ class CreateRelease():
     """Class for release creation."""
 
     def __init__(self, token, repo, release, test, title, draft, prerelease,
-                 show_sha, show_author, hide_footer, hide_full_changelog):
+                 show_sha, show_author, add_gitlab_ci_badge,
+                 hide_footer, hide_full_changelog):
         """Initilalize."""
         self.token = token
         self.repo = repo
@@ -26,6 +28,7 @@ class CreateRelease():
         self.prerelease = prerelease
         self.show_sha = show_sha
         self.show_author = show_author
+        self.add_gitlab_ci_badge = add_gitlab_ci_badge
         self.hide_footer = hide_footer
         self.hide_full_changelog = hide_full_changelog
         self.github = Github(token)
@@ -184,11 +187,20 @@ class CreateRelease():
 
     def release_description(self, last_release, version):
         """Create release description."""
+        description = ''
+
+        if self.add_gitlab_ci_badge is not None:
+            description += GITLAB_CI_BADGE
         if self.release == 'initial':
-            description = ':tada: Initial release of this repo :tada:\n'
+            description += ':tada: Initial release of this repo :tada:\n'
             description += FOOTER
+            if self.add_gitlab_ci_badge is not None:
+                description += GITLAB_CI_BADGE_LINKS.format(
+                    self.add_gitlab_ci_badge,
+                    version,
+                    self.add_gitlab_ci_badge)
         else:
-            description = BODY
+            description += BODY
             commits = self.new_commits(last_release['tag_sha'])
             if len(commits) - 1 == 0:
                 print(NO_NEW_COMMITS)
@@ -222,6 +234,11 @@ class CreateRelease():
                                                  last_release['tag_name'],
                                                  version)
                     description += changelog
+            if self.add_gitlab_ci_badge is not None:
+                description += GITLAB_CI_BADGE_LINKS.format(
+                    self.add_gitlab_ci_badge,
+                    version,
+                    self.add_gitlab_ci_badge)
         return description
 
     def publish(self, title, new_version, description, last_commit):

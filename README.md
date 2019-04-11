@@ -128,6 +128,13 @@ When this is enabled every commit line in the release description will be prefix
 
 An example of this can be seen here [https://github.com/ludeeus/reporeleaser/releases/tag/0.3.0](https://github.com/ludeeus/reporeleaser/releases/tag/0.3.0)
 
+## option `--add_gitlab_ci_badge`
+
+Adds a badge for the build status of the release. This should be followed by the repository path in GitLab.
+The structure should be the same as the `--repo` i.e. `ludeeus/reporeleaser`.
+
+**Example:** `--add_gitlab_ci_badge ludeeus/reporeleaser`
+
 ## option `--title`
 
 The name you want to use for your release, this defaults to the tag name.

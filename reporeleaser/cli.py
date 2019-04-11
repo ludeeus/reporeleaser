@@ -14,13 +14,16 @@ import click
               help="Show sha in description lines.")
 @click.option('--show_author', is_flag=True,
               help="Show author of the commits.")
+@click.option('--add_gitlab_ci_badge', default=None,
+              help="Adds a badge for the build status of the release.")
 @click.option('--hide_footer', is_flag=True,
               help="Hide footer from description.")
 @click.option('--hide_full_changelog', is_flag=True,
               help="Hide Full changelog link from description.")
 @click.option('--version', '-V', is_flag=True, help='Print version.')
 def cli(token, repo, release, test, title, draft, prerelease, show_sha,
-        show_author, hide_footer, hide_full_changelog, version):
+        show_author, add_gitlab_ci_badge, hide_footer, hide_full_changelog,
+        version):
     """CLI for this package."""
     if version:
         from reporeleaser.version import __version__
@@ -29,8 +32,8 @@ def cli(token, repo, release, test, title, draft, prerelease, show_sha,
         from reporeleaser.release import CreateRelease
         create_release = CreateRelease(token, repo, release, test, title,
                                        draft, prerelease, show_sha,
-                                       show_author, hide_footer,
-                                       hide_full_changelog)
+                                       show_author, add_gitlab_ci_badge,
+                                       hide_footer, hide_full_changelog)
         create_release.create_release()
 
 
